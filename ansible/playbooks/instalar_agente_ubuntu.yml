@@ -1,0 +1,28 @@
+---
+- name: Copy and execute a bash script
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Instalar agente en Ubuntu
+      block:
+        - name: Copy the bash script to the remote machine
+          copy:
+            src: ./scripts_ansible/instala_agente.sh
+            dest: /tmp/instala_agente.sh
+            mode: '0755'
+        - name: Execute the bash script on the remote machine
+          command: /tmp/instala_agente.sh
+          become: true      
+      when: "'ubuntu' in inventory_hostname | lower"
+    - name: Instalar agente en Amazon Linux
+      block:
+      - name: Copy the bash script to the remote machine
+        copy:
+          src: ./scripts_ansible/instala_server.sh
+          dest: /tmp/instala_server.sh
+          mode: '0755'
+      - name: Execute the bash script on the remote machine
+        command: /tmp/instala_server.sh
+        become: true      
+      when: "'amazon' in inventory_hostname | lower"
+

@@ -1,0 +1,25 @@
+{
+  "default_vpc_cidr_block": {
+    "sensitive": false,
+    "type": "string",
+    "value": "172.31.0.0/16"
+  },
+  "instance_ips": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "Amazon-Wazuh-Server": "string",
+        "Debian-Atacante": "string",
+        "Ubuntu-Agente": "string",
+        "Windows-Agente": "string"
+      }
+    ],
+    "value": {
+      "Amazon-Wazuh-Server": "3.208.29.85",
+      "Debian-Atacante": "52.87.167.85",
+      "Ubuntu-Agente": "54.172.5.7",
+      "Windows-Agente": "54.221.108.206"
+    }
+  }
+}
