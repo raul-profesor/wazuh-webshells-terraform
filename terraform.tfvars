@@ -42,7 +42,7 @@ instancias = {
     ]
   },
   "Amazon-Wazuh-Server" = {
-    instance_type = "t2.micro"
+    instance_type = "t2.medium"
     ami           = "ami-0d94353f7bad10668"
     security_group_reglas =  [
       {
@@ -72,7 +72,7 @@ instancias = {
     ]
   },
    "Windows-Agente" = {
-    instance_type = "t2.micro"
+    instance_type = "t2.medium"
     ami           = "ami-0d94353f7bad10668"
     security_group_reglas = [
       {

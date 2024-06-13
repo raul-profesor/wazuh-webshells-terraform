@@ -3,35 +3,30 @@
   hosts: all
   gather_facts: true
   tasks:
-      - name: Instalar servidor en Amazon Linux
+    - name: Instalar servidor en Amazon Linux
       block: 
-        - name: Obtener la IP del servidor para pasársela a la instalación del agente
-          set_fact:
-            ip_server: "{{ ansible_host }}"
-          #register: ip_server
 
-        - name: Copiar script instalación del servidor a la máquina remota
-          copy:
-            src: ./scripts_ansible/instala_server.sh
-            dest: /tmp/instala_server.sh
-            mode: '0755'
-            
-        - name: Ejecutar el script de instalación del servidor en la máquina remota
-          command: /tmp/instala_server.sh
-          become: true      
+      - name: Copiar script instalación del servidor a la máquina remota
+        copy:
+          src: ./scripts_ansible/instala_server.sh
+          dest: /tmp/instala_server.sh
+          mode: '0755'
+          
+      - name: Ejecutar el script de instalación del servidor en la máquina remota
+        command: /tmp/instala_server.sh
+        become: true      
       when: "'amazon' in inventory_hostname | lower"
 
     - name: Instalar agente en Ubuntu
       block:
-        - name: Copiar script instalación del agente a la máquina remota
-          copy:
-            src: ./scripts_ansible/instala_agente.sh
-            dest: /tmp/instala_agente.sh
-            mode: '0755'
-        - name: Ejecutar el script de instalación del agente en la máquina remota
-          command: /tmp/instala_agente.sh {{ ip_server}}
-          become: true      
+      - name: Copiar script instalación del agente a la máquina remota
+        copy:
+          src: ./scripts_ansible/instala_agente.sh
+          dest: /tmp/instala_agente.sh
+          mode: '0755'
+      - name: Ejecutar el script de instalación del agente en la máquina remota
+        command: /tmp/instala_agente.sh {{ lookup('env', 'IP_SERVER')}}
+        become: true      
       when: 
-        - "'ubuntu' in inventory_hostname | lower"
-        - ip_server is defined and ip_server is not none
+      - "'ubuntu' in inventory_hostname | lower"
 

@@ -42,11 +42,11 @@ for host, ip in salida_terraform['instance_ips']['value'].items():
         
         'ansible_host': ip,
         'ansible_ssh_user': usuario_asignado
-        #'private_key_file': 'despliegue_wazu.pem'
-        #'ansible_user': 'your_username',  # Replace with your username
-        #'ansible_password': '{{ lookup("env", "ANSIBLE_PASSWORD") }}',
-        #'ansible_ssh_common_args': '-o StrictHostKeyChecking=no'
     }
+    
+    # Set Ubuntu IP as an environment variable
+    if 'ubuntu' in host.lower():
+        os.environ['IP_SERVER'] = ip
 
 directorio_inventario = "./ansible"
 directorio_inventario_yaml = os.path.join(directorio_inventario,'inventory.yaml')

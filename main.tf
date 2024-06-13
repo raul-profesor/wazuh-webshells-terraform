@@ -17,7 +17,7 @@ resource "aws_key_pair" "despliegue" {
 resource "local_file" "clave_privada" {
   content  = tls_private_key.wazuh_lab_cecib.private_key_pem
   filename = "${path.module}/despliegue_wazuh.pem"
-  file_permission = "0600" 
+  file_permission = "0400" 
 }
 
 /*resource "aws_security_group" "ubuntu_agente_sg" {
