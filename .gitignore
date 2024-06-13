@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 # Ignore the .terraform directory
 .terraform/
 
 # Ignore Terraform state files
-*.tfstate
-*.tfstate.*
-=======
-.terraform/
->>>>>>> 819216a (Sin el provider)
