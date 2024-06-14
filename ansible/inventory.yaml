@@ -1,16 +1,16 @@
 all:
   hosts:
     Amazon-Wazuh-Server:
-      ansible_host: 54.84.62.224
+      ansible_host: 54.197.87.169
       ansible_ssh_user: ec2-user
     Debian-Atacante:
-      ansible_host: 44.223.21.194
+      ansible_host: 54.234.161.173
       ansible_ssh_user: admin
     Ubuntu-Agente:
-      ansible_host: 34.201.93.63
+      ansible_host: 54.91.100.191
       ansible_ssh_user: ubuntu
     Windows-Agente:
-      ansible_host: 3.84.161.156
+      ansible_host: 52.87.255.114
       ansible_ssh_user: admin
   vars:
     ansible_private_key_file: ./despliegue_wazuh.pem

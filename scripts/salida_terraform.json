@@ -16,10 +16,10 @@
       }
     ],
     "value": {
-      "Amazon-Wazuh-Server": "54.84.62.224",
-      "Debian-Atacante": "44.223.21.194",
-      "Ubuntu-Agente": "34.201.93.63",
-      "Windows-Agente": "3.84.161.156"
+      "Amazon-Wazuh-Server": "54.197.87.169",
+      "Debian-Atacante": "54.234.161.173",
+      "Ubuntu-Agente": "54.91.100.191",
+      "Windows-Agente": "52.87.255.114"
     }
   }
 }
