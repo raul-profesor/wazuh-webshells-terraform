@@ -2,31 +2,60 @@
 - name: Copy and execute a bash script
   hosts: all
   gather_facts: true
-  tasks:
+  tasks:  
     - name: Instalar servidor en Amazon Linux
       block: 
+      - name: Escribir IP del servidor en archivo local
+        local_action:
+          module: copy
+          content: "{{ ansible_host }}"
+          dest: /tmp/ip_server.txt      
 
       - name: Copiar script instalación del servidor a la máquina remota
         copy:
           src: ./scripts_ansible/instala_server.sh
           dest: /tmp/instala_server.sh
           mode: '0755'
-          
+        
       - name: Ejecutar el script de instalación del servidor en la máquina remota
         command: /tmp/instala_server.sh
         become: true      
+        register: script_output
+
+      - name: Debug script output
+        debug:
+          msg: "The script output is: {{ script_output.stdout }}"
+
+      - name: Check if the script executed successfully
+        fail:
+          msg: "The script failed with error: {{ script_output.stderr }}"
+        when: script_output.rc != 0
       when: "'amazon' in inventory_hostname | lower"
 
     - name: Instalar agente en Ubuntu
       block:
+      - name: Traerse el archivo con la ip del server
+        copy:
+          src: /tmp/ip_server.txt
+          dest: /tmp/ip_server.txt
+
       - name: Copiar script instalación del agente a la máquina remota
         copy:
           src: ./scripts_ansible/instala_agente.sh
           dest: /tmp/instala_agente.sh
           mode: '0755'
       - name: Ejecutar el script de instalación del agente en la máquina remota
-        command: /tmp/instala_agente.sh {{ lookup('env', 'IP_SERVER')}}
+        command: /tmp/instala_agente.sh
         become: true      
+        register: script_output
+      - name: Debug script output
+        debug:
+          msg: "The script output is: {{ script_output.stdout }}"
+
+      - name: Check if the script executed successfully
+        fail:
+          msg: "The script failed with error: {{ script_output.stderr }}"
+        when: script_output.rc != 0
       when: 
-      - "'ubuntu' in inventory_hostname | lower"
+        - "'ubuntu' in inventory_hostname | lower"
 

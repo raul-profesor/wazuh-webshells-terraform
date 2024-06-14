@@ -45,8 +45,8 @@ for host, ip in salida_terraform['instance_ips']['value'].items():
     }
     
     # Set Ubuntu IP as an environment variable
-    if 'ubuntu' in host.lower():
-        os.environ['IP_SERVER'] = ip
+   # if 'ubuntu' in host.lower():
+    #    os.environ['IP_SERVER'] = ip
 
 directorio_inventario = "./ansible"
 directorio_inventario_yaml = os.path.join(directorio_inventario,'inventory.yaml')
