@@ -26,6 +26,5 @@ else
     echo "Wazuh Manager is not installed."
     echo "Let's do this!"
 
-    curl -sO https://packages.wazuh.com/4.7/wazuh-install.sh && sudo bash ./wazuh-install.sh -a -i
+    curl -sO https://packages.wazuh.com/4.8/wazuh-install.sh && sudo bash ./wazuh-install.sh -a -i
 fi
-

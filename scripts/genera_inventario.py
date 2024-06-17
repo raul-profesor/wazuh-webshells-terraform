@@ -34,14 +34,17 @@ def obtener_usuario(entrada):
 
 # Add each instance to the inventory
 #for id_instancia, ip_instancia in zip(salida_terraform['id_instancias']['value'], salida_terraform['instance_ips']['value']):
-for host, ip in salida_terraform['instance_ips']['value'].items():   
+for host, ips in salida_terraform['instance_ips']['value'].items():   
+    public_ip = ips['public_ip']
+    private_ip = ips['private_ip']
     usuario_asignado = obtener_usuario(host)
         #if host.split('-')[0].lower() in instancias_nombres_usuario.items():
     #    usuario_ssh = 
     inventory['all']['hosts'][host] = {
         
-        'ansible_host': ip,
-        'ansible_ssh_user': usuario_asignado
+        'ansible_host': public_ip,
+        'ansible_ssh_user': usuario_asignado,
+        'private_ip': private_ip
     }
     
     # Set Ubuntu IP as an environment variable

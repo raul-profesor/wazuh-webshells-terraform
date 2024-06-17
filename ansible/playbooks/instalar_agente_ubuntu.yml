@@ -8,7 +8,7 @@
       - name: Escribir IP del servidor en archivo local
         local_action:
           module: copy
-          content: "{{ ansible_host }}"
+          content: "{{ private_ip }}"
           dest: /tmp/ip_server.txt      
 
       - name: Copiar script instalación del servidor a la máquina remota
@@ -22,13 +22,13 @@
         become: true      
         register: script_output
 
-      - name: Debug script output
+      - name: Debug salida del script
         debug:
-          msg: "The script output is: {{ script_output.stdout }}"
+          msg: "La salida del script es: {{ script_output.stdout }}"
 
-      - name: Check if the script executed successfully
+      - name: Comprobar si el script se ha ejecutado correctamente
         fail:
-          msg: "The script failed with error: {{ script_output.stderr }}"
+          msg: "El script ha fallado con el error: {{ script_output.stderr }}"
         when: script_output.rc != 0
       when: "'amazon' in inventory_hostname | lower"
 

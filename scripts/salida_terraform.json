@@ -9,17 +9,53 @@
     "type": [
       "object",
       {
-        "Amazon-Wazuh-Server": "string",
-        "Debian-Atacante": "string",
-        "Ubuntu-Agente": "string",
-        "Windows-Agente": "string"
+        "Amazon-Wazuh-Server": [
+          "object",
+          {
+            "private_ip": "string",
+            "public_ip": "string"
+          }
+        ],
+        "Debian-Atacante": [
+          "object",
+          {
+            "private_ip": "string",
+            "public_ip": "string"
+          }
+        ],
+        "Ubuntu-Agente": [
+          "object",
+          {
+            "private_ip": "string",
+            "public_ip": "string"
+          }
+        ],
+        "Windows-Agente": [
+          "object",
+          {
+            "private_ip": "string",
+            "public_ip": "string"
+          }
+        ]
       }
     ],
     "value": {
-      "Amazon-Wazuh-Server": "54.197.87.169",
-      "Debian-Atacante": "54.234.161.173",
-      "Ubuntu-Agente": "54.91.100.191",
-      "Windows-Agente": "52.87.255.114"
+      "Amazon-Wazuh-Server": {
+        "private_ip": "172.31.58.175",
+        "public_ip": "54.146.10.129"
+      },
+      "Debian-Atacante": {
+        "private_ip": "172.31.30.72",
+        "public_ip": "54.208.117.61"
+      },
+      "Ubuntu-Agente": {
+        "private_ip": "172.31.22.34",
+        "public_ip": "75.101.238.124"
+      },
+      "Windows-Agente": {
+        "private_ip": "172.31.62.65",
+        "public_ip": "174.129.55.2"
+      }
     }
   }
 }
