@@ -10,8 +10,17 @@ all:
       ansible_host: 54.172.5.7
       ansible_ssh_user: ubuntu
     Windows-Agente:
-      ansible_host: 54.221.108.206
+      ansible_host: 52.70.93.206
       ansible_ssh_user: ubuntu
+      ansible_user: AdminUser
+      ansible_password: SecureP@ssword123
+      ansible_port: 5986
+      ansible_connection: winrm
+      ansible_winrm_transport: ntlm
+      ansible_winrm_server_cert_validation: ignore
+
   vars:
     ansible_ssh_common_args: -o StrictHostKeyChecking=no
     private_key_file: despliegue_wazu.pem
+
+

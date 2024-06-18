@@ -1,7 +1,13 @@
 #!/bin/bash
 
+if python -c "import winrm" &> /dev/null; then
+    echo 'Ya tenías pywinrm instalado'
+else
+    echo 'Vamos a instalar python-winrm'
+    pip3 install pywinrm
+fi
+
 # Step 1: Run Terraform to create infrastructure
-pip3 install pywinrm
 
 terraform init
 terraform apply -auto-approve
@@ -29,4 +35,4 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Infrastructure provisioned and configured successfully"
+echo "Infrastructure desplegada y provisionada con éxito"

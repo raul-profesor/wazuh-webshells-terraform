@@ -4,7 +4,7 @@ from winrm.protocol import Protocol
 urllib3.disable_warnings()
 
 # Example usage
-endpoint = 'https://52.91.183.200:5986/wsman'
+endpoint = 'http://54.237.116.252:5985/wsman'
 username = 'AdminUser'
 password = 'SecureP@ssword123'
 
