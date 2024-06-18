@@ -2,6 +2,7 @@ instancias = {
   "Ubuntu-Agente" = {
     instance_type = "t2.micro"
     ami           = "ami-04b70fa74e45c3917"
+    is_windows    = false
     security_group_reglas = [
       {
         from_port   = 22
@@ -26,6 +27,7 @@ instancias = {
   "Debian-Atacante" = {
     instance_type = "t2.micro"
     ami           = "ami-058bd2d568351da34"
+    is_windows    = false
     security_group_reglas = [
       {
         from_port   = 22
@@ -44,6 +46,7 @@ instancias = {
   "Amazon-Wazuh-Server" = {
     instance_type = "t2.medium"
     ami           = "ami-0d94353f7bad10668"
+    is_windows    = false
     security_group_reglas =  [
       {
         from_port   = 22
@@ -74,6 +77,7 @@ instancias = {
    "Windows-Agente" = {
     instance_type = "t2.medium"
     ami           = "ami-0d94353f7bad10668"
+    is_windows    = true
     security_group_reglas = [
       {
         from_port   = 3389
@@ -82,10 +86,10 @@ instancias = {
         cidr_blocks = ["0.0.0.0/0"]  # RDP access from anywhere
       },
       {
-        from_port   = 22
-        to_port     = 22
+        from_port   = 5986
+        to_port     = 5986
         protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]  # SSH access from anywhere
+        cidr_blocks = ["0.0.0.0/0"]  # WinRM access 
       },
       {
         from_port   = 80
