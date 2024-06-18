@@ -13,7 +13,7 @@ instancias_nombres_usuario = {
     "ubuntu": "ubuntu",
     "debian": "admin",
     "amazon": "ec2-user",
-    "windows": "admin"
+    "windows": "AdminUser"
 }
 # Create Ansible inventory
 inventory = {
@@ -40,13 +40,24 @@ for host, ips in salida_terraform['instance_ips']['value'].items():
     usuario_asignado = obtener_usuario(host)
         #if host.split('-')[0].lower() in instancias_nombres_usuario.items():
     #    usuario_ssh = 
-    inventory['all']['hosts'][host] = {
-        
+    host_vars = {
         'ansible_host': public_ip,
         'ansible_ssh_user': usuario_asignado,
         'private_ip': private_ip
     }
     
+    # Check if the instance is a Windows instance
+    if 'windows' in host.lower():
+        host_vars.update({
+            'ansible_connection': 'winrm',
+            'ansible_winrm_server_cert_validation': 'ignore',
+            'ansible_winrm_transport': 'ntlm',
+            'ansible_winrm_port': 5986,
+            'ansible_user': usuario_asignado,
+            'ansible_password': 'SecureP@ssword123'  # Replace with your actual password or use a secret manager
+        })
+    
+    inventory['all']['hosts'][host] = host_vars
     # Set Ubuntu IP as an environment variable
    # if 'ubuntu' in host.lower():
     #    os.environ['IP_SERVER'] = ip

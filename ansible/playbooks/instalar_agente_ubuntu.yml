@@ -2,7 +2,7 @@
 - name: Copy and execute a bash script
   hosts: all
   gather_facts: true
-  tasks:  
+  tasks:
     - name: Instalar servidor en Amazon Linux
       block: 
       - name: Escribir IP del servidor en archivo local

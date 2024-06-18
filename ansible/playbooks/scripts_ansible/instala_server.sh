@@ -11,7 +11,7 @@ if [ -d "$wazuh_dir" ]; then
 fi
 
 # Check if Wazuh Manager executable exists
-wazuh_exec="/var/ossec/bin/ossec-control"
+wazuh_exec="/var/ossec/bin/wazuh-control"
 exec_exists=false
 if [ -f "$wazuh_exec" ]; then
     exec_exists=true
@@ -20,8 +20,10 @@ fi
 # Output results
 if [ "$service_status" == "active" ] && [ "$dir_exists" == true ] && [ "$exec_exists" == true ]; then
     echo "Wazuh Manager is installed and running."
+    exit 0
 elif [ "$dir_exists" == true ] && [ "$exec_exists" == true ]; then
     echo "Wazuh Manager is installed but not running."
+    exit 0
 else
     echo "Wazuh Manager is not installed."
     echo "Let's do this!"

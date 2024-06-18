@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # Step 1: Run Terraform to create infrastructure
+pip3 install pywinrm
+
 terraform init
 terraform apply -auto-approve
 #terraform plan
