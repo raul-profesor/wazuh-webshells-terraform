@@ -76,7 +76,7 @@ instancias = {
   },
    "Windows-Agente" = {
     instance_type = "t2.medium"
-    ami           = "ami-0d94353f7bad10668"
+    ami           = "ami-04df9ee4d3dfde202"
     is_windows    = true
     security_group_reglas = [
       {

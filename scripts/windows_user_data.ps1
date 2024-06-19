@@ -1,5 +1,6 @@
-<powershell>
-# Parameters for the new user
+# Parameters
+$certSubject = "CN=$env:COMPUTERNAME"
+$port = 5986
 $username = "AdminUser"
 $password = "SecureP@ssword123"
 
@@ -12,30 +13,45 @@ New-LocalUser -Name $username -Password $securePassword -FullName "Administrator
 # Add the new user to the administrators group
 Add-LocalGroupMember -Group "Administrators" -Member $username
 
-# Create a new listener
-winrm create winrm/config/Listener?Address=*+Transport=HTTPS
+# Create self-signed certificate
+$cert = New-SelfSignedCertificate -DnsName $env:COMPUTERNAME -CertStoreLocation Cert:\LocalMachine\My -NotAfter (Get-Date).AddYears(10)
 
-# Set the winrm service to start automatically
+# Configure WinRM
+# Set the WinRM service to start automatically
 Set-Service -Name winrm -StartupType Automatic
 
-# Allow basic authentication for winrm
-winrm set winrm/config/service/Auth @{Basic="true"}
+# Start the WinRM service
+Start-Service -Name winrm
 
-# Allow unencrypted communication for winrm
-winrm set winrm/config/service @{AllowUnencrypted="true"}
+# Allow basic and Negotiate authentication
+winrm set winrm/config/service/auth '@{Basic="true";Negotiate="true"}'
 
-# Create self-signed certificate
-$cert = New-SelfSignedCertificate -DnsName $env:COMPUTERNAME -CertStoreLocation Cert:\LocalMachine\My
+# Allow unencrypted communication
+winrm set winrm/config/service '@{AllowUnencrypted="false"}'
 
-# Create HTTPS listener with the certificate
-winrm create winrm/config/Listener?Address=*+Transport=HTTPS @{Hostname="$env:COMPUTERNAME";CertificateThumbprint="$($cert.Thumbprint)"}
+# Create HTTPS listener with the self-signed certificate
+$thumbprint = $cert.Thumbprint
+#$hostname = $env:COMPUTERNAME
+#$listenerCommand = "winrm create winrm/config/Listener?Address=*+Transport=HTTPS @{Hostname=`"$hostname`";CertificateThumbprint=`"$thumbprint`";Port=`"$port`"}"
+#Invoke-Expression -Command $listenerCommand
 
-# Set winrm service configuration
-winrm set winrm/config/client @{TrustedHosts="*"}
+$selector_set = @{
+    Address = "*"
+    Transport = "HTTPS"
+}
+$value_set = @{
+    CertificateThumbprint = "$thumbprint"
+}
 
-# Enable firewall rule for WinRM
-New-NetFirewallRule -DisplayName "WinRM-HTTPS" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 5986
+New-WSManInstance -ResourceURI "winrm/config/Listener" -SelectorSet $selector_set -ValueSet $value_set
 
-# Open port 5986 for WinRM
-netsh advfirewall firewall add rule name="WinRM HTTPS" protocol=TCP dir=in localport=5986 action=allow
-</powershell>
+
+# Set the trusted hosts to '*'
+winrm set winrm/config/client '@{TrustedHosts="*"}'
+
+# Enable firewall rule for WinRM HTTPS
+New-NetFirewallRule -DisplayName "Permitir WinRM-HTTPS" -Direction Inbound -Action Allow -Protocol TCP -LocalPort $port
+
+# Restart the WinRM service
+Restart-Service -Name winrm
+

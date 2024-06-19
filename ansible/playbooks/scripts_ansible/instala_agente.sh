@@ -18,7 +18,7 @@ echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4
 
 apt-get update
 
-WAZUH_MANAGER="`cat /tmp/ip_server.txt`" apt-get install wazuh-agent -y
+WAZUH_MANAGER="`cat /tmp/ip_server.txt`" apt-get install wazuh-agent=4.7.5-1 -y
 
 systemctl daemon-reload
 systemctl enable wazuh-agent
