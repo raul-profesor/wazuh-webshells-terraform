@@ -51,7 +51,7 @@ for host, ips in salida_terraform['instance_ips']['value'].items():
         host_vars.update({
             'ansible_connection': 'winrm',
             'ansible_winrm_server_cert_validation': 'ignore',
-            'ansible_winrm_transport': 'ntlm',
+            'ansible_winrm_transport': 'basic',
             'ansible_winrm_port': 5986,
             'ansible_user': usuario_asignado,
             'ansible_password': 'SecureP@ssword123'  # Replace with your actual password or use a secret manager

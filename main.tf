@@ -58,9 +58,9 @@ resource "aws_instance" "this" {
   user_data = each.value.is_windows ? file("./scripts/windows_user_data.ps1") : null
 }
 
-output "default_vpc_cidr_block" {
+/* output "default_vpc_cidr_block" {
   value = data.aws_vpc.default.cidr_block
-}
+} */
 
 output "instance_ips" {
   value = {

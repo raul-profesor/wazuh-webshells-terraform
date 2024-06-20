@@ -4,13 +4,13 @@ from winrm.protocol import Protocol
 urllib3.disable_warnings()
 
 # Example usage
-endpoint = 'https://34.229.55.190:5986/wsman'
-username = 'AdminUser3'
-password = 'profesor.1'
+endpoint = 'https://54.86.67.129:5986/wsman'
+username = 'AdminUser'
+password = 'SecureP@ssword123'
 
 p = Protocol(
     endpoint=endpoint,
-    transport='ntlm',
+    transport='basic',
     username=username,
     password=password,
     server_cert_validation='ignore'  # Ignore SSL certificate validation
