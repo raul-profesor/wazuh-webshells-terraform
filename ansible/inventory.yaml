@@ -1,27 +1,27 @@
 all:
   hosts:
     Amazon-Wazuh-Server:
-      ansible_host: 34.207.254.222
+      ansible_host: 54.81.16.84
       ansible_ssh_user: ec2-user
-      private_ip: 172.31.46.202
+      private_ip: 172.31.46.1
     Debian-Atacante:
-      ansible_host: 54.158.174.221
+      ansible_host: 3.95.200.100
       ansible_ssh_user: admin
-      private_ip: 172.31.46.92
+      private_ip: 172.31.88.212
     Ubuntu-Agente:
-      ansible_host: 54.173.132.170
+      ansible_host: 44.210.128.99
       ansible_ssh_user: ubuntu
-      private_ip: 172.31.47.115
+      private_ip: 172.31.86.13
     Windows-Agente:
       ansible_connection: winrm
-      ansible_host: 54.86.9.176
+      ansible_host: 52.201.133.206
       ansible_password: SecureP@ssword123
       ansible_ssh_user: AdminUser
       ansible_user: AdminUser
       ansible_winrm_port: 5986
       ansible_winrm_server_cert_validation: ignore
       ansible_winrm_transport: basic
-      private_ip: 172.31.45.88
+      private_ip: 172.31.43.145
   vars:
     ansible_private_key_file: ./despliegue_wazuh.pem
     ansible_ssh_common_args: -o StrictHostKeyChecking=no

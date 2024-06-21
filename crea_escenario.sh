@@ -28,6 +28,8 @@ python3 ./scripts/genera_inventario.py
 # Step 4: Run the Ansible playbook using the generated inventory
 # Run Ansible
 ansible-playbook -i ./ansible/inventory.yaml ./ansible/playbooks/instalar_agente_ubuntu.yml
+ansible-playbook -i ./ansible/inventory.yaml ./ansible/playbooks/instalar_agente_windows.yml
+
 
 # Check if Ansible succeeded
 if [ $? -ne 0 ]; then
@@ -35,4 +37,4 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo "Infrastructure desplegada y provisionada con éxito"
+echo "Infrastructura desplegada y provisionada con éxito"
