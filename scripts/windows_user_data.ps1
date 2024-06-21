@@ -90,5 +90,4 @@
     } catch {
         Log-Message "Error: $_"
     }
-    <powershell>
-    <persist>true</persist>
+</powershell>

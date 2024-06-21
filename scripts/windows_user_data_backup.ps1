@@ -55,5 +55,4 @@
 
     # Restart the WinRM service
     Restart-Service -Name winrm
-<powershell>
-<persist>true</persist>
+</powershell>

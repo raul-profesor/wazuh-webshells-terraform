@@ -18,4 +18,3 @@
     # Write a message to the log file
     "Script executed at $(Get-Date)" | Out-File -FilePath $logFile -Append
 </powershell>
-<persist>true</persist>

@@ -11,7 +11,6 @@ all:
       ansible_ssh_user: ubuntu
     Windows-Agente:
       ansible_host: 52.70.93.206
-      ansible_ssh_user: ubuntu
       ansible_user: AdminUser
       ansible_password: SecureP@ssword123
       ansible_port: 5986
