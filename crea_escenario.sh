@@ -27,8 +27,14 @@ python3 ./scripts/genera_inventario.py
 
 # Step 4: Run the Ansible playbook using the generated inventory
 # Run Ansible
-ansible-playbook -i ./ansible/inventory.yaml ./ansible/playbooks/instalar_agente_ubuntu.yml
+
+ansible-playbook -i ./ansible/inventory.yaml ./ansible/playbooks/instalar_apache.yml
+ansible-playbook -i ./ansible/inventory.yaml ./ansible/playbooks/configurar_agente_ubuntu.yml
 ansible-playbook -i ./ansible/inventory.yaml ./ansible/playbooks/instalar_agente_windows.yml
+ansible-playbook -i ./ansible/inventory.yaml ./ansible/playbooks/instalar_IIS.yml
+ansible-playbook -i ./ansible/inventory.yaml ./ansible/playbooks/configurar_servidor_wazuh.yml
+
+
 
 
 # Check if Ansible succeeded

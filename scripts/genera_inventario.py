@@ -42,7 +42,7 @@ for host, ips in salida_terraform['instance_ips']['value'].items():
     #    usuario_ssh = 
     host_vars = {
         'ansible_host': public_ip,
-        'ansible_ssh_user': usuario_asignado,
+        'ansible_user': usuario_asignado,
         'private_ip': private_ip
     }
     
@@ -53,7 +53,7 @@ for host, ips in salida_terraform['instance_ips']['value'].items():
             'ansible_winrm_server_cert_validation': 'ignore',
             'ansible_winrm_transport': 'basic',
             'ansible_winrm_port': 5986,
-            'ansible_user': usuario_asignado,
+            #'ansible_user': usuario_asignado,
             'ansible_password': 'SecureP@ssword123'  # Replace with your actual password or use a secret manager
         })
     

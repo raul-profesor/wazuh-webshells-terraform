@@ -1,0 +1,25 @@
+---
+- name: Instalar apache
+  hosts: Ubuntu-Agente
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Hacer apt update
+      apt:
+        update_cache: true
+
+    - name: Instalar apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: Iniciar apache
+      service:
+        name: apache2
+        state: started
+
+    - name: Instalar PHP 8.3 sin los paquetes remocendados
+      apt:
+        name: php8.3
+        state: present
+        install_recommends: false

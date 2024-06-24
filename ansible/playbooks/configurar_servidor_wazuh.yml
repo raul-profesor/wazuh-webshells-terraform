@@ -1,0 +1,30 @@
+---
+- name: Configuración completa del servidor Wazuh manager
+  hosts: Amazon-Wazuh-Server
+  gather_facts: false
+  become: true
+  tasks:
+    # - name: Hacer apt update
+    #   apt:
+    #     update_cache: true
+
+    - name: Copiar reglas_webshell.xml a la máquina remota
+      copy:
+        src: ./scripts_ansible/reglas_webshell.xml
+        dest: /var/ossec/etc/rules/reglas_webshell.xml
+        owner: wazuh
+        group: wazuh
+        mode: '0660'
+
+    - name: Copiar local_decoder.xml a la máquina remota
+      copy:
+        src: ./scripts_ansible/local_decoder.xml
+        dest: /var/ossec/etc/decoders/local_decoder.xml
+        owner: wazuh
+        group: wazuh
+        mode: '0660'
+
+    - name: Reiniciar el agente de Wazuh
+      service:
+        name: wazuh-manager
+        state: restarted

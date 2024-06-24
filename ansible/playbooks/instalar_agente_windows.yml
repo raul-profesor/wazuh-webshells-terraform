@@ -3,44 +3,51 @@
   hosts: Windows-Agente
   gather_facts: false
   tasks:
-    # - name: Descargar paquete instalación
-    #   win_get_url:
-    #     url: https://packages.wazuh.com/4.x/windows/wazuh-agent-4.7.5-1.msi
-    #     dest: C/tmp/wazuh-agent-4.8.0-1.msi
+    - name: Check if ossec-agent directory exists
+      win_stat:
+        path: 'C:\Program Files (x86)\ossec-agent'
+      register: wazuh_agent_check
 
-    - name: Read IP address from local file
-      ansible.builtin.set_fact:
-        ip_server_content: "{{ lookup('ansible.builtin.file', '/tmp/ip_server.txt') }}"
-
-    - name: Display the IP address content (debug)
+    - name: Display message when Wazuh agent is already installed
       debug:
-        msg: "The IP address is {{ ip_server_content }}"
+        msg: "Wazuh agent is already installed"
+      when: wazuh_agent_check.stat.exists
+
+    - block:
+      - name: Read IP address from local file
+        ansible.builtin.set_fact:
+          ip_server_content: "{{ lookup('ansible.builtin.file', '/tmp/ip_server.txt') }}"
+
+      - name: Display the IP address content (debug)
+        debug:
+          msg: "The IP address is {{ ip_server_content }}"
 
 
-    - name: Create a temporary directory
-      win_tempfile:
-        state: directory
-      register: temp_dir
+      - name: Create a temporary directory
+        win_tempfile:
+          state: directory
+        register: temp_dir
 
-    - name: Download file to temporary directory
-      win_get_url:
-        url: https://packages.wazuh.com/4.x/windows/wazuh-agent-4.7.5-1.msi
-        dest: "{{ temp_dir.path }}\\wazuh-agent-4.7.5-1.msi"
+      - name: Download file to temporary directory
+        win_get_url:
+          url: https://packages.wazuh.com/4.x/windows/wazuh-agent-4.7.5-1.msi
+          dest: "{{ temp_dir.path }}\\wazuh-agent-4.7.5-1.msi"
 
-    - name: Display temporary directory path (optional)
-      debug:
-        msg: "File downloaded to {{ temp_dir.path }}\\wazuh-agent-4.7.5-1.msi"
+      - name: Display temporary directory path (optional)
+        debug:
+          msg: "File downloaded to {{ temp_dir.path }}\\wazuh-agent-4.7.5-1.msi"
 
-    - name: Set execution policy to allow scripts
-      win_shell: Set-ExecutionPolicy Bypass -Scope Process -Force
+      - name: Set execution policy to allow scripts
+        win_shell: Set-ExecutionPolicy Bypass -Scope Process -Force
 
-    - name: Install Wazuh Agent
-      win_shell: |
-        Start-Process -FilePath "{{ temp_dir.path }}\\wazuh-agent-4.7.5-1.msi" -ArgumentList "/q", "WAZUH_MANAGER={{ ip_server_content }}" -Wait
-      args:
-        executable: powershell.exe
+      - name: Install Wazuh Agent
+        win_shell: |
+          Start-Process -FilePath "{{ temp_dir.path }}\\wazuh-agent-4.7.5-1.msi" -ArgumentList "/q", "WAZUH_MANAGER={{ ip_server_content }}" -Wait
+        args:
+          executable: powershell.exe
 
-    - name: Iniciar agente
-      ansible.windows.win_service:
-        name: Wazuh
-        state: started
+      - name: Iniciar agente
+        ansible.windows.win_service:
+          name: Wazuh
+          state: started
+      when: not wazuh_agent_check.stat.exists
