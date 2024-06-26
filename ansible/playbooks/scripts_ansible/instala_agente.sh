@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Check if Wazuh agent is already installed
+# Comprobar si el agente de Wazuh está ya instalado
 if dpkg -l | grep -q '^hi.*wazuh-agent'; then
-    echo "Wazuh agent is already installed and on hold. Skipping installation."
-    exit 0  # Exit successfully
+    echo "Wazuh agent ya está intalado y en espera. Se omite la instalación."
+    exit 0  
 elif dpkg -l | grep -q '^ii.*wazuh-agent'; then
-    echo "Wazuh agent is already installed. Skipping installation."
-    exit 0  # Exit successfully
+    echo "Wazuh agent ya está instalado. Se omite la instalación."
+    exit 0  
 fi
 
 

@@ -38,17 +38,17 @@
           - Web-Mgmt-Console      # IIS Management Console
         state: present
 
-    - name: Ensure Temp Directory Exists
+    - name: Asegurarse de que existe el directorio Temp
       win_file:
         path: C:\Temp
         state: directory
 
-    - name: Download Sysmon
+    - name: Descargar Sysmon
       win_get_url:
         url: https://download.sysinternals.com/files/Sysmon.zip
         dest: C:\Temp\Sysmon.zip
 
-    - name: Download Sysmon Configuration
+    - name: Descargar configuración de Sysmon
       win_get_url:
         url: https://wazuh.com/resources/blog/emulation-of-attack-techniques-and-detection-with-wazuh/sysmonconfig.xml
         dest: C:\Temp\sysmonconfig.xml
@@ -59,31 +59,31 @@
         dest: C:\Temp
         creates: C:\Temp\Sysmon.exe
 
-    - name: Install Sysmon with Configuration
+    - name: Instalar Sysmon con configuración previa descargada
       win_shell: |
         C:\Temp\Sysmon.exe -accepteula -i C:\Temp\sysmonconfig.xml
       args:
         creates: C:\Windows\Sysmon.exe
 
-    - name: Clean Up Sysmon Zip
+    - name: Eliminar zip de Sysmon
       win_file:
         path: C:\Temp\Sysmon.zip
         state: absent
 
-    - name: Clean Up Sysmon Config
+    - name: Eliminar configuración de Sysmon
       win_file:
         path: C:\Temp\sysmonconfig.xml
         state: absent
 
-    - name: Clean Up Sysmon Exe
+    - name: Eliminar ejecutable de Sysmon
       win_file:
         path: C:\Temp\Sysmon.exe
         state: absent
 
-    - name: Copiar archivo configuración agente a la máquina remota
+    - name: Copiar script configuración agente a la máquina remota
       win_copy:
-        src: ./scripts_ansible/ossec.conf.windows
-        dest: 'C:\Program Files (x86)\ossec-agent\ossec.conf'
+        src: ./scripts_ansible/configurar_agente.ps1
+        dest: 'C:\Temp\configurar_agente.ps1'
 
     - name: Reiniciar agente Wazuh
       win_service:

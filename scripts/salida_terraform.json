@@ -36,20 +36,20 @@
     ],
     "value": {
       "Amazon-Wazuh-Server": {
-        "private_ip": "172.31.46.1",
-        "public_ip": "52.23.222.138"
+        "private_ip": "172.31.51.251",
+        "public_ip": "54.174.139.178"
       },
       "Debian-Atacante": {
-        "private_ip": "172.31.88.212",
-        "public_ip": "54.152.119.248"
+        "private_ip": "172.31.45.11",
+        "public_ip": "3.81.103.46"
       },
       "Ubuntu-Agente": {
-        "private_ip": "172.31.86.13",
-        "public_ip": "54.165.218.186"
+        "private_ip": "172.31.33.16",
+        "public_ip": "54.173.8.242"
       },
       "Windows-Agente": {
-        "private_ip": "172.31.43.145",
-        "public_ip": "34.239.187.56"
+        "private_ip": "172.31.49.108",
+        "public_ip": "54.88.112.209"
       }
     }
   }

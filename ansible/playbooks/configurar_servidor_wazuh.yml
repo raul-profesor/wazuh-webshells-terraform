@@ -8,6 +8,39 @@
     #   apt:
     #     update_cache: true
 
+    # - name: Escribir IP del servidor en archivo local
+    #   local_action:
+    #     module: copy
+    #     content: "{{ private_ip }}"
+    #     dest: /tmp/ip_server.txt
+
+    - name: Escribir IP del servidor en archivo local
+      copy:
+        content: "{{ private_ip }}"
+        dest: /tmp/ip_server.txt
+      delegate_to: localhost
+      become: false
+
+    - name: Copiar script instalación del servidor a la máquina remota
+      copy:
+        src: ./scripts_ansible/instala_server.sh
+        dest: /tmp/instala_server.sh
+        mode: '0755'
+
+    - name: Ejecutar el script de instalación del servidor en la máquina remota
+      command: /tmp/instala_server.sh
+      become: true
+      register: script_output
+
+    - name: Debug salida del script
+      debug:
+        msg: "La salida del script es: {{ script_output.stdout }}"
+
+    - name: Comprobar si el script se ha ejecutado correctamente
+      fail:
+        msg: "El script ha fallado con el error: {{ script_output.stderr }}"
+      when: script_output.rc != 0
+
     - name: Copiar reglas_webshell.xml a la máquina remota
       copy:
         src: ./scripts_ansible/reglas_webshell.xml

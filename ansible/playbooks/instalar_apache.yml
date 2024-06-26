@@ -23,3 +23,11 @@
         name: php8.3
         state: present
         install_recommends: false
+
+    - name: Copiar webshell.php a la máquina remota
+      copy:
+        src: ./scripts_ansible/webshell.php
+        dest: /var/www/html/webshell.php
+        owner: www-data
+        group: www-data
+        mode: '0644'
