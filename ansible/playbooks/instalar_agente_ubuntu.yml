@@ -4,34 +4,6 @@
   gather_facts: false
   become: true
   tasks:
-    # - name: Instalar servidor en Amazon Linux
-    #   block: 
-    #   - name: Escribir IP del servidor en archivo local
-    #     local_action:
-    #       module: copy
-    #       content: "{{ private_ip }}"
-    #       dest: /tmp/ip_server.txt      
-
-    #   - name: Copiar script instalación del servidor a la máquina remota
-    #     copy:
-    #       src: ./scripts_ansible/instala_server.sh
-    #       dest: /tmp/instala_server.sh
-    #       mode: '0755'
-        
-    #   - name: Ejecutar el script de instalación del servidor en la máquina remota
-    #     command: /tmp/instala_server.sh
-    #     become: true      
-    #     register: script_output
-
-    #   - name: Debug salida del script
-    #     debug:
-    #       msg: "La salida del script es: {{ script_output.stdout }}"
-
-    #   - name: Comprobar si el script se ha ejecutado correctamente
-    #     fail:
-    #       msg: "El script ha fallado con el error: {{ script_output.stderr }}"
-    #     when: script_output.rc != 0
-    #   when: "'amazon' in inventory_hostname | lower"
     - name: Traerse el archivo local con la ip del server para utilizarla en la instalación
       copy:
         src: /tmp/ip_server.txt
@@ -47,9 +19,6 @@
       command: /tmp/instala_agente.sh
       become: true
       register: script_output
-    - name: Debug script output
-      debug:
-        msg: "The script output is: {{ script_output.stdout }}"
 
     - name: Check if the script executed successfully
       fail:

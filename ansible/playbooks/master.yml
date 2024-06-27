@@ -1,0 +1,9 @@
+---
+# master_playbook.yml
+- import_playbook: instalar_apache.yml
+- import_playbook: configurar_servidor_wazuh.yml
+- import_playbook: instalar_agente_ubuntu.yml
+- import_playbook: configurar_agente_ubuntu.yml
+- import_playbook: instalar_agente_windows.yml
+- import_playbook: instalar_IIS.yml
+

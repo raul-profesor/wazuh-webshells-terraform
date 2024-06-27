@@ -18,10 +18,6 @@
           ansible.builtin.set_fact:
             ip_server_content: "{{ lookup('ansible.builtin.file', '/tmp/ip_server.txt') }}"
 
-        # - name: Display the IP address content (debug)
-        #   debug:
-        #     msg: "The IP address is {{ ip_server_content }}"
-
         - name: Crea un directorio temporal
           win_tempfile:
             state: directory
@@ -31,10 +27,6 @@
           win_get_url:
             url: https://packages.wazuh.com/4.x/windows/wazuh-agent-4.7.5-1.msi
             dest: "{{ temp_dir.path }}\\wazuh-agent-4.7.5-1.msi"
-
-        # - name: Display temporary directory path (optional)
-        #   debug:
-        #     msg: "File downloaded to {{ temp_dir.path }}\\wazuh-agent-4.7.5-1.msi"
 
         - name: Configura la política para permitir la ejecución de scripts
           win_shell: Set-ExecutionPolicy Bypass -Scope Process -Force

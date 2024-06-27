@@ -4,10 +4,6 @@
   gather_facts: false
   become: true
   tasks:
-    # - name: Hacer apt update
-    #   apt:
-    #     update_cache: true
-
     - name: Instalar auditd
       apt:
         name: auditd
@@ -19,12 +15,6 @@
         state: started
         enabled: true
 
-    # - name: Copiar ossec.conf a la máquina remota
-    #   copy:
-    #     src: ./scripts_ansible/ossec.conf
-    #     dest: /var/ossec/etc/ossec.conf
-    #     mode: '0660'
-
     - name: Copiar script de configuración de reglas de auditd a la máquina remota
       copy:
         src: ./scripts_ansible/configurar_agente.sh
@@ -33,11 +23,6 @@
 
     - name: Ejecutar el script de configuración del agente en la máquina remota
       command: /tmp/configurar_agente.sh
-      register: script_output
-
-    - name: Debug salida del script
-      debug:
-        msg: "La salida del script es: {{ script_output.stdout }}"
 
     - name: Reiniciar el agente de Wazuh
       service:

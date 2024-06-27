@@ -4,15 +4,10 @@
   gather_facts: false
   become: true
   tasks:
-    # - name: Hacer apt update
-    #   apt:
-    #     update_cache: true
-
-    # - name: Escribir IP del servidor en archivo local
-    #   local_action:
-    #     module: copy
-    #     content: "{{ private_ip }}"
-    #     dest: /tmp/ip_server.txt
+    - name: Esperar a que la conexión SSH esté disponible
+      wait_for_connection:
+        delay: 0
+        timeout: 60
 
     - name: Escribir IP del servidor en archivo local
       copy:
@@ -32,14 +27,22 @@
       become: true
       register: script_output
 
-    - name: Debug salida del script
-      debug:
-        msg: "La salida del script es: {{ script_output.stdout }}"
-
     - name: Comprobar si el script se ha ejecutado correctamente
       fail:
         msg: "El script ha fallado con el error: {{ script_output.stderr }}"
       when: script_output.rc != 0
+
+    - name: Obtener el password de admin para hacer login en Wazuh
+      shell: |
+        tar -xf wazuh-install-files.tar -O wazuh-install-files/wazuh-passwords.txt \
+        | grep admin -A 1 \
+        | sed -n '2p' \
+        | awk '{print $2}'
+      register: admin_password_output        
+
+    - name: Imprimir el password
+      debug:
+        msg: "El password para 'admin' es {{ admin_password_output.stdout }}"
 
     - name: Copiar reglas_webshell.xml a la máquina remota
       copy:
