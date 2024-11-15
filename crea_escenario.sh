@@ -3,7 +3,7 @@
 if pip show pywinrm &> /dev/null; then
     echo "El módulo pywinrm ya está instalado"
 else
-    echo "El móduylo pywinrm no está instalado, instalado ahora..."
+    echo "El módulo pywinrm no está instalado, instalado ahora..."
     pip3 install pywinrm
     if [ $? -eq 0 ]; then
         echo "El módulo pywinrm se ha instalado con éxito."
