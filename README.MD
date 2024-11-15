@@ -10,7 +10,7 @@ En primer lugar, hace falta configurar las credenciales para poder acceder a AWS
 
 1. aws_access_key_id
 2. aws_secret_access_key
-3. aws_session_token=
+3. aws_session_token
 
 Y estos 3 valores deben configurarse en `~/.aws/credentials`
 
