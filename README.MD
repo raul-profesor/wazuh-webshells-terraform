@@ -33,7 +33,7 @@ Y comenzará el despliegue:
 + Generará un inventario que contendrá las IPs de las instancias y todo lo necesario para que sea utilizdo por Ansible
 + Realizará la provisión y configuración de instancias haciendo uso de Ansible
 
-Se debe tardar paciencia puesto que el proceso puede tardar ~15 minutos.
+Se debe tener paciencia puesto que el proceso puede tardar ~15 minutos.
 
 ## Tras el despliegue, como llevo a cabo la comprobación del escenario
 
