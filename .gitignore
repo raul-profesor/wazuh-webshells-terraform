@@ -31,3 +31,5 @@ terraform.rc
 
 **/.vscode/*
 .ansible.lint
+
+*.pem
